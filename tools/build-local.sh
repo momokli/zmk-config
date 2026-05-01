@@ -54,7 +54,7 @@ for SIDE in left right; do
         -w /workspace \
         "$IMG" \
         sh -c "west zephyr-export && west build -s zmk/app -d build/$SIDE \
-            -b nice_nano \
+            -b nice_nano/nrf52840/zmk \
             -- -DSHIELD='splitkb_aurora_corne_${SIDE}' \
                -DZMK_CONFIG='/workspace/config'"
 

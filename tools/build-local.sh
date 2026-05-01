@@ -2,57 +2,64 @@
 set -e
 
 # ──────────────────────────────────────────────
-# Lokaler ZMK Build mit Docker
+# Lokaler ZMK Build (CI-kompatibel)
 # ──────────────────────────────────────────────
-# Baut beide Hälften der Corne und legt die .uf2
-# Dateien in ./firmware/ ab.
+# Nutzt das gleiche Docker-Image wie die GitHub
+# Actions: zmkfirmware/zmk-build-arm:stable
 # ──────────────────────────────────────────────
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 CONFIG_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-ZMK_DIR="$CONFIG_DIR/.zmk"
+BASE_DIR="$CONFIG_DIR/.zmk-build"
+IMG="zmkfirmware/zmk-build-arm:stable"
 
 mkdir -p "$CONFIG_DIR/firmware"
-mkdir -p "$ZMK_DIR"
+mkdir -p "$BASE_DIR"
 
 echo "=== ZMK Firmware Build ==="
 echo "Config:  $CONFIG_DIR"
-echo "ZMK src: $ZMK_DIR"
+echo "Base:    $BASE_DIR"
+echo "Image:   $IMG"
 echo ""
 
-# ── 1. ZMK Source holen (einmalig) ──
-if [ ! -f "$ZMK_DIR/app/CMakeLists.txt" ]; then
-    echo "📥 ZMK Firmware wird geklont..."
-    git clone --depth 1 https://github.com/zmkfirmware/zmk.git "$ZMK_DIR"
-    cd "$ZMK_DIR"
+# ── 1. Config ins Base-Verzeichnis kopieren ──
+#    (wie CI: wenn module.yml existiert, wird in
+#     tmp-Verzeichnis kopiert und von dort gebaut)
+echo "📋 Kopiere Config..."
+rm -rf "$BASE_DIR/config"
+cp -R "$CONFIG_DIR/config" "$BASE_DIR/config"
+cp -R "$CONFIG_DIR/zephyr" "$BASE_DIR/zephyr" 2>/dev/null || true
 
-    docker run --rm --platform linux/amd64 --entrypoint sh \
-        -v "$ZMK_DIR:/zmk" -w /zmk \
-        zmkfirmware/zephyr-west-action-arm \
-        -c "west init -l app/ && west update"
+# ── 2. West Init + Update (einmalig) ──
+if [ ! -f "$BASE_DIR/zmk/app/CMakeLists.txt" ]; then
+    echo "📥 West Init + Update (ZMK + Zephyr holen)..."
+    docker run --rm --platform linux/amd64 \
+        -v "$BASE_DIR:/workspace" \
+        -w /workspace \
+        "$IMG" \
+        sh -c "west init -l config/ && west update --fetch-opt=--filter=tree:0 && west zephyr-export"
 else
-    echo "✅ ZMK Source vorhanden"
+    echo "✅ ZMK Source bereits vorhanden"
 fi
 
-# ── 2. Beide Seiten bauen ──
+# ── 3. Beide Seiten bauen ──
 for SIDE in left right; do
     echo ""
     echo "🔨 Baue $SIDE ..."
 
-    rm -rf "$ZMK_DIR/app/build/$SIDE"
+    rm -rf "$BASE_DIR/build/$SIDE"
 
-    docker run --rm --platform linux/amd64 --entrypoint west \
-        -v "$ZMK_DIR:/zmk" \
-        -v "$CONFIG_DIR/config:/config" \
-        -w /zmk/app \
-        zmkfirmware/zephyr-west-action-arm \
-        build -b nice_nano_v2 \
-            -d "build/$SIDE" \
-            -- -DSHIELD="splitkb_aurora_corne_${SIDE}" \
-               -DZMK_CONFIG="/config"
+    docker run --rm --platform linux/amd64 \
+        -v "$BASE_DIR:/workspace" \
+        -w /workspace \
+        "$IMG" \
+        sh -c "west zephyr-export && west build -s zmk/app -d build/$SIDE \
+            -b nice_nano \
+            -- -DSHIELD='splitkb_aurora_corne_${SIDE}' \
+               -DZMK_CONFIG='/workspace/config'"
 
     # Firmware kopieren
-    cp "$ZMK_DIR/app/build/$SIDE/zephyr/zmk.uf2" \
+    cp "$BASE_DIR/build/$SIDE/zephyr/zmk.uf2" \
        "$CONFIG_DIR/firmware/splitkb_aurora_corne_${SIDE}.uf2"
 
     echo "✅ $SIDE -> firmware/splitkb_aurora_corne_${SIDE}.uf2"
@@ -60,5 +67,4 @@ done
 
 echo ""
 echo "=== Fertig! ==="
-echo "Firmware liegt in: $CONFIG_DIR/firmware/"
 ls -la "$CONFIG_DIR/firmware/"*.uf2 2>/dev/null

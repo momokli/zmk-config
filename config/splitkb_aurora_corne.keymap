@@ -136,6 +136,11 @@
             bindings = <&kp SPACE>;
             key-positions = <20 19 21>;
         };
+
+        GamingToggle {
+            bindings = <&tog 7>;
+            key-positions = <10 11>;
+        };
     };
 
     keymap {
@@ -213,6 +218,21 @@
 &none  &kp F11  &kp F4   &kp F5              &kp F6     &kp SCROLLLOCK     &none  &kp RSHFT  &kp LCTRL  &kp LALT  &kp LGUI  &none
 &none  &kp F10  &kp F1   &kp F2              &kp F3     &kp PAUSE_BREAK    &none  &none      &none      &kp RALT  &none     &none
                          &kp K_CONTEXT_MENU  &kp SPACE  &kp TAB            &none  &none      &none
+            >;
+        };
+
+        Gaming {
+            // -----------------------------------------------------------------------------------------
+            // |  1  |  2  |  W  |  E  |  R  |  M  |   |  6  |  7  |  8  |  9  |  0  |  -  |
+            // |  Q  |  A  |  S  |  D  |  F  |  G  |   |  Y  |  U  |  I  |  O  |  P  |  Ü  |
+            // | LSH |  Z  |  B  |  C  |  X  |  V  |   |  H  |  J  |  K  |  L  |  Ö  |  Ä  |
+            //             |LCTRL| SPC |LALT |   | TAB | ENT | ESC |
+
+            bindings = <
+&kp N1   &kp N2   &kp W    &kp E        &kp R        &kp M      &kp N6   &kp N7   &kp N8   &kp N9   &kp N0   &kp MINUS
+&kp Q    &kp A    &kp S    &kp D        &kp F        &kp G      &kp Y    &kp U    &kp I    &kp O    &kp P    &kp DE_O_UMLAUT
+&kp LSHIFT &kp Z  &kp B    &kp C        &kp X        &kp V      &kp H    &kp J    &kp K    &kp L    &kp DE_O_UMLAUT &kp DE_A_UMLAUT
+                                &kp LCTRL &kp SPACE &kp LALT   &kp TAB  &kp ENTER &kp ESC
             >;
         };
     };

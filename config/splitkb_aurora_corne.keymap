@@ -139,7 +139,7 @@
 
         GamingToggle {
             bindings = <&tog 7>;
-            key-positions = <10 11>;
+            key-positions = <0 24>;
         };
     };
 

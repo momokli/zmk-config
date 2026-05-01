@@ -1,91 +1,25 @@
 /*
- * Copyright (c) 2025 ZMK Config
  * SPDX-License-Identifier: MIT
  *
- * Aurora Lily58 (58 Tasten) — QWERTZ Deutsch
- *
- * Einsteiger-freundlich. Nur 3 Layer:
- *   0: Base — Reines QWERTZ (alles da, WASD inklusive)
- *   1: NAV  — Pfeiltasten, F1-F12, Page/Home/End
- *   2: SYM  — Symbole, Klammern, Rechenzeichen
- *
- * Thumb-Tasten:
- *   Links: CTRL | SPC | ALT | NAV (halten)
- *   Rechts: SYM | ALT | SPC | ENTER
- *
- * Linke Hälfte funktioniert allein.
+ * Aurora Lily58 — QWERTZ Deutsch
+ * Basis: thinkahead123/lily58-zmk-config
  */
 
-#include "keys_de.h"
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
+#include "keys_de.h"
 
 / {
     keymap {
         compatible = "zmk,keymap";
 
-        /* ═══════════════════════════════════════════════════════════════════════════
-           LAYER 0: BASE — Reines QWERTZ Deutsch
-           ═══════════════════════════════════════════════════════════════════════════
-            Linke Hälfte:                           Rechte Hälfte:
-           ┌─────┬─────┬─────┬─────┬─────┬─────┐   ┌─────┬─────┬─────┬─────┬─────┬─────┐
-           │  1  │  2  │  3  │  4  │  5  │  6  │   │  7  │  8  │  9  │  0  │  ß  │  ´  │
-           ├─────┼─────┼─────┼─────┼─────┼─────┤   ├─────┼─────┼─────┼─────┼─────┼─────┤
-           │  Q  │  W  │  E  │  R  │  T  │  Z  │   │  U  │  I  │  O  │  P  │  Ü  │  +  │
-           ├─────┼─────┼─────┼─────┼─────┼─────┤   ├─────┼─────┼─────┼─────┼─────┼─────┤
-           │  A  │  S  │  D  │  F  │  G  │  H  │   │  J  │  K  │  L  │  Ö  │  Ä  │  #  │
-           ├─────┼─────┼─────┼─────┼─────┼─────┼──┐ ┌──┼─────┼─────┼─────┼─────┼─────┼─────┤
-           │  Y  │  X  │  C  │  V  │  B  │  N  │M │ │, │  .  │  -  │ ENT │ TAB │ BSP │ DEL │
-           └─────┴─────┴─────┴─────┴─────┴─────┴──┘ └──┴─────┴─────┴─────┴─────┴─────┴─────┘
-                   ┌─────┬─────┬─────┬─────┐        ┌─────┬─────┬─────┬─────┐
-                   │CTRL │ SPC │ ALT │ NAV │        │ SYM │ ALT │ SPC │ ENT │
-                   └─────┴─────┴─────┴─────┘        └─────┴─────┴─────┴─────┘
-           ═══════════════════════════════════════════════════════════════════════════ */
-
         base {
             bindings = <
-    // ── TOP (0-5) ──                   ── TOP (29-34) ──
-    &kp N1      &kp N2      &kp N3      &kp N4      &kp N5      &kp N6      &kp N7      &kp N8      &kp N9      &kp N0      &kp DE_ESZETT   &kp DE_ACUTE
-    // ── HOME (6-11) ──                 ── HOME (35-40) ──
-    &kp Q       &kp W       &kp E       &kp R       &kp T       &kp Z       &kp U       &kp I       &kp O       &kp P       &kp DE_U_UMLAUT &kp DE_PLUS
-    // ── BOTTOM (12-17) ──              ── BOTTOM (41-46) ──
-    &kp A       &kp S       &kp D       &kp F       &kp G       &kp H       &kp J       &kp K       &kp L       &kp DE_O_UMLAUT &kp DE_A_UMLAUT &kp DE_HASH
-    // ── INNER (18-24) ──               ── INNER (47-53) ──
-    &kp Y       &kp X       &kp C       &kp V       &kp B       &kp N       &kp M       &kp DE_COMMA &kp DE_DOT  &kp MINUS    &kp RETURN    &kp TAB      &kp BACKSPACE &kp DELETE
-    // ── THUMB (25-28) ──               ── THUMB (54-57) ──
-                &kp LCTRL  &kp SPACE   &kp LALT    &lt 1 TAB   &lt 2 ENTER &kp LALT    &kp SPACE   &kp RETURN
-            >;
-        };
-
-        /* ═══════════════════════════════════════════════════════════════════════════
-           LAYER 1: NAV — Navigation & F-Tasten
-           ═══════════════════════════════════════════════════════════════════════════
-           Linken Daumen (pos 28) halten → NAV Layer
-           ═══════════════════════════════════════════════════════════════════════════ */
-
-        NAV {
-            bindings = <
-    &kp F1      &kp F2      &kp F3      &kp F4      &kp F5      &kp F6      &kp F7      &kp F8      &kp F9      &kp F10     &kp F11         &kp F12
-    &none       &none       &none       &none       &none       &none       &none       &kp PG_UP   &none       &none       &none           &none
-    &none       &none       &none       &none       &none       &none       &kp HOME    &kp LEFT    &kp DOWN    &kp UP      &kp RIGHT       &kp END
-    &none       &none       &none       &none       &none       &none       &none       &kp PG_DN   &none       &none       &none           &none
-                &none       &none       &none       &none       &none       &none       &none       &none
-            >;
-        };
-
-        /* ═══════════════════════════════════════════════════════════════════════════
-           LAYER 2: SYM — Symbole & Sonderzeichen
-           ═══════════════════════════════════════════════════════════════════════════
-           Rechten Daumen (pos 54) halten → SYM Layer
-           ═══════════════════════════════════════════════════════════════════════════ */
-
-        SYM {
-            bindings = <
-    &kp DE_EXCLAMATION &kp DE_DOUBLE_QUOTES &kp DE_SECTION  &kp DE_DOLLAR  &kp DE_PERCENT  &kp DE_AMPERSAND &kp DE_SLASH &kp DE_LEFT_PAREN  &kp DE_RIGHT_PAREN &kp DE_EQUAL &kp DE_QUESTION &kp DE_GRAVE
-    &none    &kp DE_AT_SIGN &kp DE_TILDE &kp DE_PIPE  &kp DE_BACKSLASH  &none    &kp DE_LEFT_BRACKET &kp DE_RIGHT_BRACKET &kp DE_LEFT_CURLY_BRACE &kp DE_RIGHT_CURLY_BRACE &kp UNDERSCORE &none
-    &none    &none    &none    &none    &none    &none    &none    &none    &none    &none       &none       &none
-    &none    &none    &none    &none    &none    &none    &none    &none    &none    &none    &none    &none
-                &none    &none    &none    &none    &none    &none    &none    &none
+&kp N1 &kp N2 &kp N3 &kp N4 &kp N5 &kp N6  &kp N7 &kp N8 &kp N9 &kp N0 &kp DE_ESZETT &kp DE_ACUTE
+&kp Q  &kp W  &kp E  &kp R  &kp T  &kp Z   &kp U  &kp I  &kp O  &kp P  &kp DE_U_UMLAUT &kp DE_PLUS
+&kp A  &kp S  &kp D  &kp F  &kp G  &kp H   &kp J  &kp K  &kp L  &kp DE_O_UMLAUT &kp DE_A_UMLAUT &kp DE_HASH
+&kp Y  &kp X  &kp C  &kp V  &kp B  &kp N  &kp M  &kp DE_COMMA &kp DE_DOT &kp MINUS &kp RETURN &kp TAB &kp BACKSPACE &kp DELETE
+       &kp LCTRL &kp SPACE &kp LALT &kp TAB  &kp RETURN &kp LALT &kp SPACE &kp RETURN
             >;
         };
     };

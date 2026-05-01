@@ -140,7 +140,7 @@
 
         GamingToggle {
             bindings = <&tog 7>;
-            key-positions = <0 24>;
+            key-positions = <0 12>;
             timeout-ms = <50>;
             layers = <0>;
         };

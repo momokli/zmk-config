@@ -19,8 +19,8 @@
 ---
 include:
   - board: nice_nano/nrf52840/zmk
-    shield: splitkb_aurora_corne_left
+    shield: splitkb_aurora_lily58_left
   - board: nice_nano/nrf52840/zmk
-    shield: splitkb_aurora_corne_right
+    shield: splitkb_aurora_lily58_right
   - board: nice_nano/nrf52840/zmk
     shield: settings_reset

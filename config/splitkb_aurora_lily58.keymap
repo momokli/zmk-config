@@ -3,12 +3,18 @@
  * SPDX-License-Identifier: MIT
  *
  * Aurora Lily58 (58 Tasten) — QWERTZ Deutsch
- * Einsteiger-freundliches Split-Layout
+ * Links-hand-zentrisch (linke Hälfte funktioniert allein)
+ *
+ * Use Cases:
+ *   - Tägliches Tippen (QWERTZ)
+ *   - Gaming (WASD-Layer per Toggle)
+ *   - CAD/Macros (technisches Zeichnen)
  *
  * Layer:
- *   0: Base (QWERTZ-Deutsch)
- *   1: NAV (Navigation, Media, F-Tasten)
- *   2: SYM (Symbole, Zahlen, Funktionen)
+ *   0: Base   — QWERTZ Deutsch
+ *   1: NA     — Navigation, F-Tasten, Media
+ *   2: CAD    — CAD-Shortcuts (Strg+Z/C/V/X, etc.)
+ *   3: Gaming — WASD + Gaming-Keys (Toggle per Combo)
  */
 
 #include "keys_de.h"
@@ -16,94 +22,115 @@
 #include <dt-bindings/zmk/keys.h>
 
 / {
+    combos {
+        compatible = "zmk,combos";
+
+        GamingToggle {
+            bindings = <&tog 3>;
+            key-positions = <0 12>;
+            timeout-ms = <50>;
+            layers = <0>;
+        };
+    };
+
     keymap {
         compatible = "zmk,keymap";
 
-        /* ─── Layer 0: Base (QWERTZ Deutsch) ─────────────────────────────────── */
-        /*                                                                         */
-        /* Links:                                    Rechts:                      */
-        /* ┌─────┬─────┬─────┬─────┬─────┬─────┐   ┌─────┬─────┬─────┬─────┬─────┬─────┐
-         * │  1  │  2  │  3  │  4  │  5  │  6  │   │  7  │  8  │  9  │  0  │  ß  │  ´  │
-         * ├─────┼─────┼─────┼─────┼─────┼─────┤   ├─────┼─────┼─────┼─────┼─────┼─────┤
-         * │  Q  │  W  │  E  │  R  │  T  │  Z  │   │  U  │  I  │  O  │  P  │  Ü  │  +  │
-         * ├─────┼─────┼─────┼─────┼─────┼─────┤   ├─────┼─────┼─────┼─────┼─────┼─────┤
-         * │  A  │  S  │  D  │  F  │  G  │  H  │   │  J  │  K  │  L  │  Ö  │  Ä  │  #  │
-         * ├─────┼─────┼─────┼─────┼─────┼─────┼──┐ ┌──┼─────┼─────┼─────┼─────┼─────┼─────┤
-         * │  Y  │  X  │  C  │  V  │  B  │  N  │M │ │, │  .  │  -  │ ENT │ TAB │ BSP │ DEL │
-         * └─────┴─────┴─────┴─────┴─────┴─────┴──┘ └──┴─────┴─────┴─────┴─────┴─────┴─────┘
-         *           ┌─────┬─────┬─────┬─────┐       ┌─────┬─────┬─────┬─────┐
-         *           │CTRL │ ALT │ SPC │ NA  │       │ SYM │ ALT │ SPC │ ENT │
-         *           └─────┴─────┴─────┴─────┘       └─────┴─────┴─────┴─────┘
-         *                                                                         */
+        /* ═══════════════════════════════════════════════════════════════════════════
+           LAYER 0: BASE (QWERTZ Deutsch)
+           ═══════════════════════════════════════════════════════════════════════════
+           Links (allein nutzbar):                     Rechts (optional):
+           ┌─────┬─────┬─────┬─────┬─────┬─────┐      ┌─────┬─────┬─────┬─────┬─────┬─────┐
+           │  1  │  2  │  3  │  4  │  5  │  6  │      │  7  │  8  │  9  │  0  │  ß  │  ´  │
+           ├─────┼─────┼─────┼─────┼─────┼─────┤      ├─────┼─────┼─────┼─────┼─────┼─────┤
+           │  Q  │  W  │  E  │  R  │  T  │  Z  │      │  U  │  I  │  O  │  P  │  Ü  │  +  │
+           ├─────┼─────┼─────┼─────┼─────┼─────┤      ├─────┼─────┼─────┼─────┼─────┼─────┤
+           │  A  │  S  │  D  │  F  │  G  │  H  │      │  J  │  K  │  L  │  Ö  │  Ä  │  #  │
+           ├─────┼─────┼─────┼─────┼─────┼─────┼──┐   ┌──┼─────┼─────┼─────┼─────┼─────┼─────┤
+           │  Y  │  X  │  C  │  V  │  B  │  N  │M │   │, │  .  │  -  │ ENT │ TAB │ BSP │ DEL │
+           └─────┴─────┴─────┴─────┴─────┴─────┴──┘   └──┴─────┴─────┴─────┴─────┴─────┴─────┘
+                    ┌─────┬─────┬─────┬─────┐          ┌─────┬─────┬─────┬─────┐
+                    │CTRL │ SPC │ ALT │ NA  │          │ SYM │ SPD │ ALT │ ENT │
+                    └─────┴─────┴─────┴─────┘          └─────┴─────┴─────┴─────┘
+           ═══════════════════════════════════════════════════════════════════════════ */
 
         base {
             bindings = <
-    // ── LEFT TOP (0-5) ──              ── RIGHT TOP (29-34) ──
-    &kp N1  &kp N2  &kp N3  &kp N4  &kp N5  &kp N6  &kp N7  &kp N8  &kp N9  &kp N0  &kp DE_ESZETT   &kp DE_ACUTE
-    // ── LEFT HOME (6-11) ──            ── RIGHT HOME (35-40) ──
-    &kp Q   &kp W   &kp E   &kp R   &kp T   &kp Z   &kp U   &kp I   &kp O   &kp P   &kp DE_U_UMLAUT &kp DE_PLUS
-    // ── LEFT BOTTOM (12-17) ──         ── RIGHT BOTTOM (41-46) ──
-    &kp A   &kp S   &kp D   &kp F   &kp G   &kp H   &kp J   &kp K   &kp L   &kp DE_O_UMLAUT &kp DE_A_UMLAUT &kp DE_HASH
-    // ── LEFT INNER (18-24) ──          ── RIGHT INNER (47-53) ──
-    &kp Y   &kp X   &kp C   &kp V   &kp B   &kp N   &kp M   &kp DE_COMMA &kp DE_DOT &kp MINUS &kp RETURN &kp TAB &kp BACKSPACE &kp DELETE
-    // ── LEFT THUMB (25-28) ──          ── RIGHT THUMB (54-57) ──
-            &kp LCTRL &kp LALT &kp SPACE &lt 1 TAB  &lt 2 ENTER &kp LALT &kp SPACE &kp RETURN
+    // ── TOP (0-5) ──                   ── TOP (29-34) ──
+    &kp N1      &kp N2      &kp N3      &kp N4      &kp N5      &kp N6      &kp N7      &kp N8      &kp N9      &kp N0      &kp DE_ESZETT   &kp DE_ACUTE
+    // ── HOME (6-11) ──                 ── HOME (35-40) ──
+    &kp Q       &kp W       &kp E       &kp R       &kp T       &kp Z       &kp U       &kp I       &kp O       &kp P       &kp DE_U_UMLAUT &kp DE_PLUS
+    // ── BOTTOM (12-17) ──              ── BOTTOM (41-46) ──
+    &kp A       &kp S       &kp D       &kp F       &kp G       &kp H       &kp J       &kp K       &kp L       &kp DE_O_UMLAUT &kp DE_A_UMLAUT &kp DE_HASH
+    // ── INNER (18-24) ──               ── INNER (47-53) ──
+    &kp Y       &kp X       &kp C       &kp V       &kp B       &kp N       &kp M       &kp DE_COMMA &kp DE_DOT  &kp MINUS    &kp RETURN    &kp TAB      &kp BACKSPACE &kp DELETE
+    // ── THUMB (25-28) ──               ── THUMB (54-57) ──
+                &kp LCTRL  &kp SPACE   &kp LALT    &lt 1 TAB   &lt 2 ENTER &kp LALT    &kp SPACE   &kp RETURN
             >;
         };
 
-        /* ─── Layer 1: NAV (Navigation) ───────────────────────────────────────── */
-        /* SPACE halten (links) aktiviert diesen Layer                          */
-        /*                                                                         */
-        /* Links:                                    Rechts:                      */
-        /* ┌─────┬─────┬─────┬─────┬─────┬─────┐   ┌─────┬─────┬─────┬─────┬─────┬─────┐
-         * │ F1  │ F2  │ F3  │ F4  │ F5  │ F6  │   │ F7  │ F8  │ F9  │ F10 │ F11 │ F12 │
-         * ├─────┼─────┼─────┼─────┼─────┼─────┤   ├─────┼─────┼─────┼─────┼─────┼─────┤
-         * │     │     │     │     │     │     │   │     │     │     │     │     │     │
-         * ├─────┼─────┼─────┼─────┼─────┼─────┤   ├─────┼─────┼─────┼─────┼─────┼─────┤
-         * │     │     │     │     │     │     │   │     │     │     │     │     │     │
-         * ├─────┼─────┼─────┼─────┼─────┼─────┼──┐ ┌──┼─────┼─────┼─────┼─────┼─────┼─────┤
-         * │     │     │     │     │     │     │   │ │   │     │     │     │     │     │     │
-         * └─────┴─────┴─────┴─────┴─────┴─────┴──┘ └──┴─────┴─────┴─────┴─────┴─────┴─────┘
-         *           ┌─────┬─────┬─────┬─────┐       ┌─────┬─────┬─────┬─────┐
-         *           │     │     │     │ TRNS│       │ TRNS│     │     │     │
-         *           └─────┴─────┴─────┴─────┘       └─────┴─────┴─────┴─────┘
-         *                                                                         */
+        /* ═══════════════════════════════════════════════════════════════════════════
+           LAYER 1: NA (Navigation / F-keys)
+           ═══════════════════════════════════════════════════════════════════════════
+           Daumen-Taste (pos 28) halten → Layer 1
+           ═══════════════════════════════════════════════════════════════════════════ */
 
-        NAV {
+        NA {
             bindings = <
-    &kp F1   &kp F2   &kp F3   &kp F4   &kp F5   &kp F6   &kp F7   &kp F8   &kp F9   &kp F10  &kp F11       &kp F12
-    &none    &none    &none    &none    &none    &none    &none    &kp UP    &none    &none    &none         &none
-    &none    &none    &none    &none    &none    &none    &kp LEFT &kp DOWN  &kp RIGHT  &none   &none         &none
-    &none    &none    &none    &none    &none    &none    &none    &none     &none     &none    &none         &none
-            &none    &none    &none    &none    &none    &none    &none    &none
+    &kp F1      &kp F2      &kp F3      &kp F4      &kp F5      &kp F6      &kp F7      &kp F8      &kp F9      &kp F10     &kp F11         &kp F12
+    &none       &none       &none       &none       &none       &none       &none       &kp UP      &none       &none       &none           &none
+    &none       &none       &none       &none       &none       &none       &kp LEFT    &kp DOWN    &kp RIGHT   &none       &none           &none
+    &none       &none       &none       &none       &none       &none       &none       &none       &none       &none       &none           &none
+                &none       &none       &none       &none       &none       &none       &none       &none
             >;
         };
 
-        /* ─── Layer 2: SYM (Symbole & Zahlen) ─────────────────────────────────── */
-        /* ENTER halten (rechts) aktiviert diesen Layer                         */
-        /*                                                                         */
-        /* Links:                                    Rechts:                      */
-        /* ┌─────┬─────┬─────┬─────┬─────┬─────┐   ┌─────┬─────┬─────┬─────┬─────┬─────┐
-         * │  !  │  "  │  §  │  $  │  %  │  &  │   │  /  │  (  │  )  │  =  │  ?  │  `  │
-         * ├─────┼─────┼─────┼─────┼─────┼─────┤   ├─────┼─────┼─────┼─────┼─────┼─────┤
-         * │     │  @  │  ~  │  |  │  \  │     │   │  [  │  ]  │  {  │  }  │     │     │
-         * ├─────┼─────┼─────┼─────┼─────┼─────┤   ├─────┼─────┼─────┼─────┼─────┼─────┤
-         * │     │     │     │     │     │     │   │     │     │  _  │     │     │     │
-         * ├─────┼─────┼─────┼─────┼─────┼─────┼──┐ ┌──┼─────┼─────┼─────┼─────┼─────┼─────┤
-         * │     │     │     │     │     │     │   │ │   │     │     │     │     │     │     │
-         * └─────┴─────┴─────┴─────┴─────┴─────┴──┘ └──┴─────┴─────┴─────┴─────┴─────┴─────┘
-         *           ┌─────┬─────┬─────┬─────┐       ┌─────┬─────┬─────┬─────┐
-         *           │     │     │     │     │       │ TRNS│     │     │     │
-         *           └─────┴─────┴─────┴─────┘       └─────┴─────┴─────┴─────┘
-         *                                                                         */
+        /* ═══════════════════════════════════════════════════════════════════════════
+           LAYER 2: CAD (Technisches Zeichnen / Macros)
+           ═══════════════════════════════════════════════════════════════════════════
+           Shortcuts für AutoCAD / Fusion 360 / etc.
+           ═══════════════════════════════════════════════════════════════════════════ */
 
-        SYM {
+        CAD {
             bindings = <
-    &kp DE_EXCLAMATION &kp DE_DOUBLE_QUOTES &kp DE_SECTION  &kp DE_DOLLAR  &kp DE_PERCENT  &kp DE_AMPERSAND &kp DE_SLASH &kp DE_LEFT_PAREN  &kp DE_RIGHT_PAREN &kp DE_EQUAL &kp DE_QUESTION &kp DE_GRAVE
-    &none    &kp DE_AT_SIGN &kp DE_TILDE &kp DE_PIPE  &kp DE_BACKSLASH  &none    &kp DE_LEFT_BRACKET &kp DE_RIGHT_BRACKET &kp DE_LEFT_CURLY_BRACE &kp DE_RIGHT_CURLY_BRACE &none &none
-    &none    &none    &none    &none    &none    &none    &none    &none    &kp UNDERSCORE &none       &none       &none
-    &none    &none    &none    &none    &none    &none    &none    &none    &none    &none    &none    &none
-            &none    &none    &none    &none    &none    &none    &none    &none
+    // ── TOP ──                         ── TOP ──
+    &kp GRAVE   &kp F1      &kp F2      &kp F3      &kp F4      &kp F5      &kp F6      &kp F7      &kp F8      &kp F9      &kp F10         &kp F11
+    // ── HOME ──                        ── HOME ──
+    &none       &kp LC(S)   &kp LC(P)   &kp LC(Z)   &kp LC(Y)   &none       &none       &none       &none       &none       &kp F12         &none
+    // ── BOTTOM ──                      ── BOTTOM ──
+    &kp LC(X)   &kp LC(C)   &kp LC(V)   &none       &none       &none       &none       &none       &none       &none       &none           &none
+    // ── INNER ──                       ── INNER ──
+    &none       &none       &none       &none       &none       &none       &none       &none       &none       &none       &none           &none
+    // ── THUMB ──                       ── THUMB ──
+                &none       &none       &none       &none       &none       &none       &none       &none
+            >;
+        };
+
+        /* ═══════════════════════════════════════════════════════════════════════════
+           LAYER 3: GAMING (WASD + Gaming Keys)
+           ═══════════════════════════════════════════════════════════════════════════
+           Toggle per Combo (pos 0 + 12) oder per NA-Layer (F12 o.ä.)
+           ┌─────┬─────┬─────┬─────┬─────┬─────┐      ┌─────┬─────┬─────┬─────┬─────┬─────┐
+           │ GRAV│  1  │  W  │  2  │  3  │  4  │      │  5  │  6  │  7  │  8  │  9  │  0  │
+           ├─────┼─────┼─────┼─────┼─────┼─────┤      ├─────┼─────┼─────┼─────┼─────┼─────┤
+           │  Q  │  A  │  S  │  D  │  E  │  R  │      │  T  │  Z  │  U  │  I  │  O  │  P  │
+           ├─────┼─────┼─────┼─────┼─────┼─────┤      ├─────┼─────┼─────┼─────┼─────┼─────┤
+           │ LSH │  F  │  C  │  X  │  V  │  B  │      │  N  │  M  │  ,  │  .  │  -  │     │
+           ├─────┼─────┼─────┼─────┼─────┼─────┼──┐   ┌──┼─────┼─────┼─────┼─────┼─────┼─────┤
+           │ TAB │  ~  │  G  │  H  │  J  │  K  │L │   │   │     │     │     │     │     │     │
+           └─────┴─────┴─────┴─────┴─────┴─────┴──┘   └──┴─────┴─────┴─────┴─────┴─────┴─────┘
+                    ┌─────┬─────┬─────┬─────┐          ┌─────┬─────┬─────┬─────┐
+                    │CTRL │ SPC │ ALT │TRNS │          │TRNS │     │     │     │
+                    └─────┴─────┴─────┴─────┘          └─────┴─────┴─────┴─────┘
+           ═══════════════════════════════════════════════════════════════════════════ */
+
+        Gaming {
+            bindings = <
+    &tog 3      &kp N1      &kp W       &kp N2      &kp N3      &kp N4      &kp N5      &kp N6      &kp N7      &kp N8      &kp N9          &kp N0
+    &kp Q       &kp A       &kp S       &kp D       &kp E       &kp R       &kp T       &kp Z       &kp U       &kp I       &kp O           &kp P
+    &kp LSHIFT  &kp F       &kp C       &kp X       &kp V       &kp B       &kp N       &kp M       &kp DE_COMMA &kp DE_DOT &kp MINUS      &none
+    &kp TAB     &kp GRAVE   &kp G       &kp H       &kp J       &kp K       &kp L       &none       &none       &none       &none           &none
+                &kp LCTRL  &kp SPACE   &kp LALT    &none       &none       &none       &none       &none
             >;
         };
     };

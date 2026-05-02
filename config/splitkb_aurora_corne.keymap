@@ -226,19 +226,20 @@
             // ─── Factorio/Gaming Layer ────────────────────────────────────────────
             // Toggle: ESC+Q (pos 0+12) = rein/raus
             //
-            // TOP:     ESC   1    W    E    R    T
+            // TOP:     ESC   1    W    E    R    M
             // HOME:    Q     A    S    D    F    G
             // BOTTOM:  LSH   Z    B    C    X    V
             // THUMB:         LCTRL  SPC  LALT
             //
-            // Ctrl-Kombos: LCTRL+Z/X/C/V (Undo/Cut/Copy/Paste)
+            // Alt-Kombos:    LALT+G (Green Wire), LALT+R (Red Wire), LALT+C (Copper)
+            // Ctrl-Kombos:   LCTRL+Z (Undo), LCTRL+X (Cut), LCTRL+C (Copy), LCTRL+V (Paste)
             // ────────────────────────────────────────────────────────────────────────
 
             bindings = <
-&kp ESC  &kp N1  &kp W  &kp E  &kp R  &kp T     &kp N6  &kp N7  &kp N8  &kp N9  &kp N0  &kp MINUS
+&kp ESC  &kp N1  &kp W  &kp E  &kp R  &kp M     &kp N6  &kp N7  &kp N8  &kp N9  &kp N0  &kp MINUS
 &kp Q    &kp A   &kp S  &kp D  &kp F  &kp G     &kp Y   &kp U   &kp I   &kp O   &kp P   &kp DE_O_UMLAUT
 &kp LSHIFT &kp Z &kp B  &kp C  &kp X  &kp V     &kp H   &kp J   &kp K   &kp L   &kp DE_O_UMLAUT &kp DE_A_UMLAUT
-                              &kp LCTRL &kp SPACE &kp LALT &kp TAB &kp ENTER &kp ESC
+                              &kp LCTRL &kp SPACE &kp LALT &kp ENTER &kp TAB &kp ESC
             >;
         };
     };
